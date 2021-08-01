@@ -13,11 +13,13 @@
     <h1>{{ countdown }}</h1>
   </div>
 
-  <div *ngIf="this.stage === 'game'" class="game">
+  <div *ngIf="this.stage === 'game'" class="gameBox">
     <div class="stop-watch">
-      <div class="display">{{format(mm)}}:{{format(ss)}}:{{format(ms)}}</div>
+      <div class="display">
+        {{ format(mm) }}:{{ format(ss) }}:{{ format(ms) }}
+      </div>
     </div>
-    <div class="quote">
+    <div class="gamePhrase">
       <p class="has-text-centered">
         <span
           [class]="compare(letter, enteredText[i])"
@@ -36,14 +38,19 @@
     ></textarea>
 
     <div *ngIf="enteredText === gamePhrase" class="box has-text-centered">
-      <button type="submit" class="submitResult" (click)="submitGame()">Submit</button>
+      <button type="submit" class="submitResult" (click)="submitGame()">
+        Submit
+      </button>
     </div>
   </div>
 
   <div *ngIf="this.stage === 'finished'">
-    <h1> The Winner is :</h1>
-    <h2><b> {{winner}}</b></h2>
-    <h4><small>Time : {{winnerSS}}s {{winnerMS}}ms</small></h4>
-
+    <h1>The Winner is :</h1>
+    <h2>
+      <b> {{ winner }}</b>
+    </h2>
+    <h4>
+      <small>Time : {{ winnerSS }}s {{ winnerMS }}ms</small>
+    </h4>
   </div>
 </div>

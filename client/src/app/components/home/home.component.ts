@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RandomnameService } from '../../services/randomname.service';
 import { SocketioService } from '../../services/socketio.service'
-import { Router } from '@angular/router';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -29,8 +27,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private socketService: SocketioService,
-    private nameService: RandomnameService,
-    private router: Router
+    private nameService: RandomnameService
   ) {}
 
   ngOnInit() {
@@ -45,6 +42,10 @@ export class HomeComponent implements OnInit {
     this.socketService.disconnect();
   }
 
+
+  /**
+   * @summary Create a new room / join a room. Check if the game is submitted by opponent.
+   */
   joinRoom() {
     let response: any;
     this.socketService.joinRoom(this.name).subscribe((data: any) => {
@@ -79,26 +80,41 @@ export class HomeComponent implements OnInit {
     });
   }
 
+/**
+ * @summary load the game and update the stage
+ */
   loadGame() {
     this.stage = 'game';
-    this.clickHandler()
+    this.submitHandler()
   }
 
+  /**
+   * 
+   * @param event input by the user on the textarea
+   */
   onInput(event: any) {
     this.enteredText = event.target.value;
   }
 
-  compare(randomLetter: string, enteredLetter: string) {
+  /**
+   * 
+   * @param letterFromGivenPhrase Letter from the game Phrase
+   * @param enteredLetter Letter entered by the user
+   * @returns the class of the letter to be displayed on the game phrase
+   */
+  compare(letterFromGivenPhrase: string, enteredLetter: string) {
     if (!enteredLetter) {
       return 'pending';
     }
 
-    return randomLetter === enteredLetter ? 'correct' : 'incorrect';
+    return letterFromGivenPhrase === enteredLetter ? 'correct' : 'incorrect';
   }
 
-  clickHandler() {
+  /**
+   * @summary Start / Stop the timer based on game submission.
+   */
+  submitHandler() {
     if (!this.isRunning) {
-      // Stop => Running
       this.timerId = setInterval(() => {
         this.ms++;
 
@@ -117,12 +133,19 @@ export class HomeComponent implements OnInit {
     this.isRunning = !this.isRunning;
   }
 
+  /**
+   * @param num time entity minutes / seconds / milliseconds
+   * @returns formatted number
+   */
   format(num: number) {
     return (num + '').length === 1 ? '0' + num : num + '';
   }
 
+  /**
+   * @summary Submit the Game and declare winner.
+   */
   submitGame(){
-    this.clickHandler()
+    this.submitHandler()
     this.socketService.submitGame(this.gameId,this.name,this.mm,this.ss,this.ms);
   }
 }
