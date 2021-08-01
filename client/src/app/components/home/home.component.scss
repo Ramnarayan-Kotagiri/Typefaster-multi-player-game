@@ -15,6 +15,11 @@
   margin: 10px;
   padding: 25px;
   box-shadow: black 5px 8px 5px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .input_area {
