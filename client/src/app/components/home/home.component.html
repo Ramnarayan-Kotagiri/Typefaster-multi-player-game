@@ -1,0 +1,49 @@
+<div class="container">
+  <div *ngIf="this.stage == 'home'">
+    <h1>Hello {{ name }} !</h1>
+    <button type="submit" (click)="joinRoom()">Lets Play</button>
+  </div>
+
+  <div *ngIf="this.stage == 'waiting'">
+    <h1>Please wait while other participant joins</h1>
+  </div>
+
+  <div *ngIf="this.stage === 'connected'">
+    <h1>Countdown starts</h1>
+    <h1>{{ countdown }}</h1>
+  </div>
+
+  <div *ngIf="this.stage === 'game'" class="game">
+    <div class="stop-watch">
+      <div class="display">{{format(mm)}}:{{format(ss)}}:{{format(ms)}}</div>
+    </div>
+    <div class="quote">
+      <p class="has-text-centered">
+        <span
+          [class]="compare(letter, enteredText[i])"
+          *ngFor="let letter of gamePhrase.split(''); let i = index"
+          >{{ letter }}</span
+        >
+      </p>
+    </div>
+
+    <textarea
+      class="input_area"
+      placeholder="start typing here..."
+      (input)="onInput($event)"
+      rows="4"
+      cols="50"
+    ></textarea>
+
+    <div *ngIf="enteredText === gamePhrase" class="box has-text-centered">
+      <button type="submit" class="submitResult" (click)="submitGame()">Submit</button>
+    </div>
+  </div>
+
+  <div *ngIf="this.stage === 'finished'">
+    <h1> The Winner is :</h1>
+    <h2><b> {{winner}}</b></h2>
+    <h4><small>Time : {{winnerSS}}s {{winnerMS}}ms</small></h4>
+
+  </div>
+</div>
